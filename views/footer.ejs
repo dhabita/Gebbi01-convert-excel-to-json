@@ -1,0 +1,48 @@
+<!-- footer -->
+<footer>© <span class="font-beyno">Copyright</span> 2022</footer>
+<!-- /footer -->
+
+<script>
+    document
+        .querySelector(".contract-address > a")
+        .addEventListener("click", function(event) {
+            event.preventDefault();
+            this.previousElementSibling.select();
+            document.execCommand("copy");
+            this.classList.add("active");
+            this.focus();
+            var that = this;
+            setTimeout(function() {
+                that.classList.remove("active");
+            }, 600);
+        });
+
+    var tabBtns = document.querySelectorAll('.tabs .btn');
+    var contractAddressTextArea = document.querySelector('.contract-address textarea');
+    var addresses = {
+        bsc: '0x52a05B8801F314e9AaEb53a905ff0F4762Cb0081',
+        eth: '0x5444c30210d8a0a156178cfb8048b4137c0d40d1'
+    };
+
+    tabBtns.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            var that = this;
+            tabBtns.forEach(function(b) {
+                b.classList.remove('current');
+                that.classList.add('current');
+                contractAddressTextArea.textContent = addresses[that.dataset.tabKey];
+            });
+        });
+    });
+</script>
+<script src="./noble2_files/main.js"></script>
+
+
+<input id="ext-version" type="hidden"><input id="ext-id" type="hidden" value="foahoboefnlidmejppiibgnifpbjeknh"></body>
+<grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
+
+</html>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>

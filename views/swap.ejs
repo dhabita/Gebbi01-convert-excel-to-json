@@ -1,0 +1,949 @@
+<!doctype html>
+<html lang="en" translate="no">
+
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Ninebot</title>
+    <meta name="description" content="Automatic binance trading bot">
+    <meta name="keywords" content="binance , bnb , bitcoin , bot , binance bot , royalq" />
+    <link rel="icon" type="image/png" href="/assets/img/nine.png" sizes="32x32">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/nine.png">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="/assets/js/function.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/md5.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <style>
+        body {
+            color: #7e7c81;
+        }
+        
+        b {
+            color: cornflowerblue;
+        }
+    </style>
+</head>
+<script>
+    var serverbnb = "https://bsc-dataseed1.defibit.io/";
+    const web3 = new Web3(new Web3.providers.HttpProvider(serverbnb));
+    let CONTRACT = "0xA4C347338cBE543bB21c5f33d69F0F2B9deD394d";
+    let NBG = "0x7d43Fc6E88D1E58Ec59aB7126C973fA09D212702";
+    let LP = "0x530B4857C4f69E53520030bC2a1bFDa808b2E535";
+</script>
+
+
+
+
+
+
+<body style=" background:#4f3462;">
+
+    <h1 class="text-center  pt-3 mb-0">NBG SWAP </h1>
+
+
+
+    <div class=" text-left p-2 text-center " style='margin-top:2vh'>
+        <p>
+            Copy this address https://app.ninebot.io/app <br> Then open from Trustwallet or Metamask<br> If you have OLD NBG Then Aprove swap and Confirm Swap
+        </p>
+        <br><br>
+        <p>
+            Old Smart Contract <br> 0x6cC76132A84e2095c1F4f2EA71881dAEf8a75D5e <br> <br> New Smart Contract <br> 0x7d43fc6e88d1e58ec59ab7126c973fa09d212702
+        </p>
+        <br><br>
+        <P>
+            Convert ( SWAP ) Old NBG to New NBG
+        </P>
+
+        <p>Wallet balance </p>
+        <p>Old NBG : <span id='oldnbg'>0</span></p>
+        <p>New NBG : <span id='newnbg'>0</span></p>
+
+        <div class="row mt-2 p-2 pt-1" id="appr">
+            <button class='btn  btn-warning btn-sm ' onclick="reqaprove(1)">
+APPROVE SWAP
+</button>
+
+
+        </div>
+
+
+        <div class="row mt-2 p-2 pt-1" id="dplp" style="display:none">
+
+
+            <button class='btn  btn-success btn-sm ' onclick="Deposit(0,$('#amdp').val())">
+CONFIRM SWAP
+</button>
+
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+        <a href='/'>Home</a>
+
+
+    </div>
+
+
+
+
+
+
+</body>
+
+
+
+
+<script>
+    let ABIOLDNBG = [{
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    }, {
+        "anonymous": false,
+        "inputs": [{
+            "indexed": true,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+        }, {
+            "indexed": true,
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+        }, {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+        }],
+        "name": "Approval",
+        "type": "event"
+    }, {
+        "anonymous": false,
+        "inputs": [{
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+        }, {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+        }],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    }, {
+        "anonymous": false,
+        "inputs": [{
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+        }, {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+        }, {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+        }],
+        "name": "Transfer",
+        "type": "event"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+        }, {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+        }],
+        "name": "allowance",
+        "outputs": [{
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+        }, {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+        }],
+        "name": "approve",
+        "outputs": [{
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+        }],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+        }],
+        "name": "balanceOf",
+        "outputs": [{
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [{
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+        }, {
+            "internalType": "uint256",
+            "name": "subtractedValue",
+            "type": "uint256"
+        }],
+        "name": "decreaseAllowance",
+        "outputs": [{
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+        }],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "getOwner",
+        "outputs": [{
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+        }, {
+            "internalType": "uint256",
+            "name": "addedValue",
+            "type": "uint256"
+        }],
+        "name": "increaseAllowance",
+        "outputs": [{
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+        }],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "name",
+        "outputs": [{
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [{
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "symbol",
+        "outputs": [{
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [{
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+        }, {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+        }],
+        "name": "transfer",
+        "outputs": [{
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+        }],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+        }, {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+        }, {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+        }],
+        "name": "transferFrom",
+        "outputs": [{
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+        }],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+        }],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }];
+    let ABINEWNBG = [{
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    }, {
+        "anonymous": false,
+        "inputs": [{
+            "indexed": true,
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+        }, {
+            "indexed": true,
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+        }, {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+        }],
+        "name": "Approval",
+        "type": "event"
+    }, {
+        "anonymous": false,
+        "inputs": [{
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+        }, {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+        }],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    }, {
+        "anonymous": false,
+        "inputs": [{
+            "indexed": true,
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+        }, {
+            "indexed": true,
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+        }, {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+        }],
+        "name": "Transfer",
+        "type": "event"
+    }, {
+        "inputs": [],
+        "name": "MaxTaxPerM",
+        "outputs": [{
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "uint256",
+            "name": "taxFee",
+            "type": "uint256"
+        }],
+        "name": "SetTaxPerM",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "TaxPerM",
+        "outputs": [{
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+        }, {
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+        }],
+        "name": "allowance",
+        "outputs": [{
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+        }, {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+        }],
+        "name": "approve",
+        "outputs": [{
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+        }],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+        }],
+        "name": "balanceOf",
+        "outputs": [{
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "token",
+            "type": "address"
+        }],
+        "name": "clear",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "clearBNB",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+        }],
+        "name": "convert_to_new",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [{
+            "internalType": "uint8",
+            "name": "",
+            "type": "uint8"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+        }, {
+            "internalType": "uint256",
+            "name": "subtractedValue",
+            "type": "uint256"
+        }],
+        "name": "decreaseAllowance",
+        "outputs": [{
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+        }],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "devAddress",
+        "outputs": [{
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "spender",
+            "type": "address"
+        }, {
+            "internalType": "uint256",
+            "name": "addedValue",
+            "type": "uint256"
+        }],
+        "name": "increaseAllowance",
+        "outputs": [{
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+        }],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "name",
+        "outputs": [{
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [{
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "addr",
+            "type": "address"
+        }],
+        "name": "setDevAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "symbol",
+        "outputs": [{
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [{
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+        }, {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+        }],
+        "name": "transfer",
+        "outputs": [{
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+        }],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "sender",
+            "type": "address"
+        }, {
+            "internalType": "address",
+            "name": "recipient",
+            "type": "address"
+        }, {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+        }],
+        "name": "transferFrom",
+        "outputs": [{
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+        }],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "inputs": [{
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+        }],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }, {
+        "stateMutability": "payable",
+        "type": "receive"
+    }];
+</script>
+
+
+<script>
+    let CONT = "0x6cC76132A84e2095c1F4f2EA71881dAEf8a75D5e";
+    let NEWCONT = "0x7d43fc6e88d1e58ec59ab7126c973fa09d212702";
+
+    async function reqaprove(app = 0) {
+
+
+        const web3 = new Web3(ethereum);
+
+
+        const accounts = await ethereum.request({
+            method: 'eth_requestAccounts'
+        });
+        var fr = accounts[0];
+        var contract4 = new web3.eth.Contract(ABIOLDNBG, CONT);
+
+
+        await contract4.methods.allowance(fr, NEWCONT).call().then(function(resp) {
+
+            if (resp > 999999999) {
+                $("#appr").hide();
+                $("#dplp").show();
+
+
+                return true;
+            } else {
+
+                if (app == 0) return;
+
+                const web3 = new Web3(ethereum);
+                //const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                //const account = accounts[0];
+                var contract = new web3.eth.Contract(ABIOLDNBG, CONT);
+                var amn = "115792089237316195423570985008687907853269984665640564039457584007913129639935";
+                contract.methods.approve(NEWCONT, amn).send({
+                        from: fr
+                    },
+                    function(err, transactionHash) {
+                        //console.log(transactionHash);
+                        $("#appr").html(`
+                <button class='btn  btn-warning btn-sm ' onclick="reqaprove(1)">
+    
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+   Waiting block confirmation </button>`);
+
+                        setTimeout(function() {
+
+                            // $("#dplp").show();
+                            reqaprove(0);
+                        }, 10000);
+                        //HANDLE.Approve(pid, transactionHash);
+                        return true;
+                    });
+            }
+        });
+
+
+    }
+
+    reqaprove(0);
+    setInterval(reqaprove, 10000);
+</script>
+
+<script>
+    async function changenetwork() {
+
+        try {
+            await ethereum.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{
+                    chainId: '0x38'
+                }], // Hexadecimal version of 80001, prefixed with 0x
+            });
+        } catch (error) {
+            if (error.code === 4902) {
+                try {
+                    await ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{
+                            chainId: '0x38', // Hexadecimal version of 80001, prefixed with 0x
+                            chainName: "Binance",
+                            nativeCurrency: {
+                                name: "BNB",
+                                symbol: "BNB",
+                                decimals: 18,
+                            },
+                            rpcUrls: ["https://bsc-dataseed1.ninicoin.io/"],
+                            blockExplorerUrls: ["https://bscscan.com/"],
+                            iconUrls: [""],
+
+                        }],
+                    });
+                } catch (addError) {
+                    console.log('Did not add network');
+                }
+            }
+        }
+    }
+
+
+
+
+    changenetwork();
+
+
+    var WALLET = {
+        walletConect: function() {
+            if (typeof window.ethereum !== 'undefined') return true;
+            else return false;
+        },
+        checkMetamask: function() {
+
+            if (typeof window.ethereum !== 'undefined') {
+                console.log('MetaMask is installed!');
+                //  HANDLE.Metamask(true);
+                return true;
+            } else {
+                console.log("Need metamask to run this application");
+                // HANDLE.Metamask(false);
+                return false;
+            }
+
+
+        },
+        logout: function() {
+
+
+
+
+        },
+
+        getAccount: async function() {
+            if (WALLET.walletConect()) {} else return;
+
+            const accounts = await ethereum.request({
+                method: 'eth_requestAccounts'
+            });
+            const account = accounts[0];
+
+            //  HANDLE.Account(account);
+
+        }
+    }
+
+    if (WALLET.walletConect())
+        window.ethereum.on('accountsChanged', function(accounts) {
+            var wallet = getCookie("current-wallet");
+            if (wallet == "0") return;
+            console.log(accounts);
+            WALLET.logout();
+            //  MICROPAD.getAccount();
+        })
+
+    WALLET.getAccount();
+
+
+    {
+        async function avv() {
+
+            const web3 = new Web3(ethereum);
+            const accounts = await ethereum.request({
+                method: 'eth_requestAccounts'
+            });
+            var fr = accounts[0];
+
+            try {
+
+                var contract = new web3.eth.Contract(ABIOLDNBG, CONT);
+
+                await contract.methods.balanceOf(fr).call().then(function(resp) {
+
+                    $("#oldnbg").html((resp / (10 ** 18)).toFixed(8));
+                    // $("#avr").html((resp / (10 ** 18) * RATEMBCH).toFixed(2));
+
+                });
+            } catch (error) {
+
+            }
+        }
+
+        avv();
+        setInterval(avv, 10000);
+
+    } {
+        async function avv2() {
+
+            const web3 = new Web3(ethereum);
+            const accounts = await ethereum.request({
+                method: 'eth_requestAccounts'
+            });
+            var fr = accounts[0];
+
+            try {
+
+                var contract = new web3.eth.Contract(ABINEWNBG, NEWCONT);
+
+                await contract.methods.balanceOf(fr).call().then(function(resp) {
+
+                    $("#newnbg").html((resp / (10 ** 18)).toFixed(8));
+                    // $("#avr").html((resp / (10 ** 18) * RATEMBCH).toFixed(2));
+
+                });
+            } catch (error) {
+
+            }
+        }
+
+        avv2();
+        setInterval(avv2, 10000);
+
+    }
+
+
+    async function Deposit(pid, am) {
+        const web3 = new Web3(ethereum);
+        const accounts = await ethereum.request({
+            method: 'eth_requestAccounts'
+        });
+        var fr = accounts[0];
+        var contract = new web3.eth.Contract(ABINEWNBG, NEWCONT);
+        var tx = {
+            from: fr,
+            to: NEWCONT,
+            data: contract.methods.convert_to_new(0).encodeABI()
+        };
+        web3.eth.sendTransaction(tx).then(res => {
+            //             $("#dplp").html(`
+            //                 <button class='btn  btn-warning btn-sm ' onclick="reqaprove(1)">
+            //     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            //    Waiting block confirmation </button>`);
+            //hideLoader();
+            //HANDLE.Deposit(pid, res);
+            //WALLET.getWalletLpBalance(pid);
+            //console.log("res",res);
+        }).catch(err => {
+            //onsole.log("err",err)
+        });
+    }
+</script>

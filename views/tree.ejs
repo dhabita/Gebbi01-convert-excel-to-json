@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en" translate="no">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Ninebot</title>
+    <meta name="description" content="Automatic binance trading bot">
+    <meta name="keywords" content="binance , bnb , bitcoin , bot , binance bot , royalq" />
+    <link rel="icon" type="image/png" href="/assets/img/nine.png" sizes="32x32">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/nine.png">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="/assets/js/function.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/md5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+   <style>
+
+ 
+    #mainContainer{
+    overflow:auto;
+    background:Red;
+    min-width:1000px;
+}
+#containerFor1{
+    overflow:auto;
+    background:Red;
+    min-width:1000px;
+}
+.container{
+    text-align:center;
+    margin:10px .5%;
+    padding:10px .5%;
+    background:green;
+    float:left;
+    overflow:visible;
+    position:relative;
+}
+
+
+.member{
+    background:#eee;   
+    position:relative;
+    z-index:   1;
+    cursor:default;
+    border-bottom:solid 1px #000;
+}
+.member:after{
+    display:block;
+    position:absolute;
+    left:50%;
+    width:1px; 
+    height:20px;
+    background:#000;
+    content:" ";
+    bottom:100%;
+}
+.member:hover{
+ z-index:   2;
+}
+.member .metaInfo{
+    display:none;
+    border:solid 1px #000;
+    background:#fff;
+    position:absolute;
+    bottom:100%;
+    left:50%;
+    padding:5px;
+    width:100px;
+}
+.member:hover .metaInfo{
+    display:block;   
+}
+.member .metaInfo img{
+  width:50px;
+  height:50px; 
+  display:inline-block; 
+  padding:5px;
+  margin-right:5px;
+    vertical-align:top;
+  border:solid 1px #aaa;
+}
+</style>
+</head>
+
+<body>
+    <div id="mainContainer" class="clearfix"></div>
+</body>
+<script>
+    var members0 = [
+    {memberId : 1,  amount:300, otherInfo:"blah1"},
+ 
+];
+
+
+
+function heya(memberss,parentId){
+    // This is slow and iterates over each object everytime.
+    // Removing each item from the array before re-iterating 
+    // may be faster for large datasets.
+    for(var i = 0; i < memberss.length; i++){
+        var member = memberss[i];
+        
+            var parent = parentId ? $("#containerFor" + parentId) : $("#mainContainer"),
+                memberId = member.memberId,
+                metaInfo = member.otherInfo + " ($" + member.amount + ")";
+            parent.append("<div class='container ' id='containerFor" + memberId + "'><div class='member'>" + memberId + "<div class='metaInfo'>" + metaInfo + "</div></div></div>");
+            
+        
+    }
+ }
+ var members =[];
+ heya(members0,null);
+   members = [
+    {memberId : 2,   amount:300, otherInfo:"blah1"},
+    {memberId : 3,   amount:400, otherInfo:"blah2"},
+    {memberId : 4,   amount:500, otherInfo:"blah3"},
+    {memberId : 6,   amount:600, otherInfo:"blah4"}
+];
+ heya(members,1);
+ members = [
+    {memberId : 7,   amount:300, otherInfo:"blah1"},
+    {memberId : 8,   amount:400, otherInfo:"blah2"},
+    {memberId : 9,   amount:500, otherInfo:"blah3"},
+    {memberId : 10,   amount:600, otherInfo:"blah4"}
+];
+ heya(members,3);
+ members = [
+    {memberId : 11,   amount:300, otherInfo:"blah1"},
+    {memberId : 12,   amount:400, otherInfo:"blah2"},
+    {memberId : 13,   amount:500, otherInfo:"blah3"},
+    {memberId : 14,   amount:600, otherInfo:"blah4"}
+];
+ heya(members,9);
+ 
+
+// makes it pretty:
+// recursivley resizes all children to fit within the parent.
+var pretty = function(){
+    var self = $(this),
+        children = self.children(".container");
+        // subtract 4% for margin/padding/borders.
+        width = (100/children.length) - 2;
+    children
+        .css("width", width + "%")
+        .each(pretty);
+    
+};
+$("#mainContainer").each(pretty);
+        
+</script>

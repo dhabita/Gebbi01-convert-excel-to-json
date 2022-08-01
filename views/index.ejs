@@ -1,0 +1,75 @@
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+<div style="width:1000px;margin:30px auto">
+    <table id="table_id" class="display">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>First</th>
+                <th>Last</th>
+                <th>Username</th>
+                <th>Phone</th>
+
+
+            </tr>
+        </thead>
+        <tbody id="tab_b">
+
+
+        </tbody>
+    </table>
+</div>
+
+
+<button onclick=" feed(page-1);">Back</button> <button onclick=" feed(page+1);">Next</button>
+
+
+
+
+<script>
+    let page = 0;
+
+    function feed(p) {
+        page = p;
+        console.log(p)
+        $('#table_id').DataTable().clear().destroy();
+        $('#table_id').DataTable({
+            pageLength: 20,
+            ajax: '/api/list/1000/' + p,
+            columns: [{
+                data: 'id'
+            }, {
+                data: 'first'
+            }, {
+                data: 'last'
+            }, {
+                data: 'username'
+            }, {
+                data: 'phone'
+            }],
+        });
+
+    }
+    feed(0);
+    // $.get("/api/list/100/10", function(data) {
+
+    //     // data.message.forEach(e => {
+
+    //     //     `
+    //     //     <tr>
+    //     //     <td>${e.first}</td>
+    //     //     <td>${e.last}</td>
+    //     //     <td>${e.username}</td>
+    //     //     <td>Row 1 Data 2</td>
+    //     //     <td>Row 1 Data 2</td>
+    //     // </tr>`
+
+    //     // });
+
+
+    // }, "json");
+</script>

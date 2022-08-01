@@ -1,0 +1,150 @@
+<% include /header-back -%>
+
+
+    <!-- App Header -->
+    <div class="appHeader no-border transparent position-absolute">
+        <div class="left">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">Resend Email</div>
+        <div class="right">
+        </div>
+    </div>
+    <!-- * App Header -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <div class="section mt-3 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Confirm email</h2>
+                    Make sure you have been check email , and click confirmation Link.
+                </div>
+            </div>
+        </div>
+
+        <div class="section mb-5 p-2">
+
+            <div class="card">
+                <div class="card-body pb-1">
+
+                    <div class="form-group basic">
+                        <div class="input-wrapper">
+                            <label class="label" for="email1">E-mail</label>
+                            <input type="email" class="form-control" id="email" placeholder="Your e-mail">
+                            <i class="clear-input">
+                                    <ion-icon name="close-circle"></ion-icon>
+                                </i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-button-group transparent">
+                <button type="submit" class="btn btn-primary btn-block  " onclick="reset()">Resend Link</button>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+
+    <div class="modal fade modalbox" id="login-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Warning</h5>
+                    <a href="#" data-bs-dismiss="modal">Close</a>
+                </div>
+
+                <div class="modal-body">
+                    <p id="login_error" class="error text-danger"></p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade modalbox" id="login-modal-s" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Warning</h5>
+                    <a href="/app">Close</a>
+                </div>
+                <div class="modal-body">
+                    <p id="login_success" class="error text-success"> Reset password success , Please check Your email to confirm</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- * App Capsule -->
+
+
+    <!-- ========= JS Files =========  -->
+    <!-- Bootstrap -->
+    <script src="/assets/js/lib/bootstrap.bundle.min.js"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <!-- Splide -->
+    <script src="/assets/js/plugins/splide/splide.min.js"></script>
+    <!-- Base Js File -->
+    <script src="/assets/js/base.js"></script>
+
+
+    </body>
+
+    </html>
+
+
+    <script>
+        function reset() {
+            //grecaptcha.ready(function() {
+            //  grecaptcha.execute('6LcrfR0cAAAAABGSuFZ52ws32WUJbUKknD2FkcGO', {
+            //      action: 'submit'
+            //  }).then(async function(token) {
+            $.ajaxSetup({
+                headers: {
+                    'Authorization' : getCookie("token")
+                }
+            });
+
+
+
+            var email = $("#email").length ? $("#email").val() : "";
+
+            var data = {
+                email: email,
+
+            };
+
+            // console.log(data);
+
+            $.post(SERVERAPI+"/api/resend", data)
+                .done(function(data) {
+                    console.log(data);
+                    //alert( "Data Loaded: " + data );
+                    if (data.status) {
+
+                        $('#login-modal-s').modal('show');
+
+
+                    } else {
+                        $("#login_error").html(data.message);
+                        $('#login-modal').modal('show');
+
+                    }
+                });
+
+
+        }
+    </script>

@@ -1,15 +1,37 @@
 {
-  "name": "belajar",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "node st.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "convert-excel-to-json": "^1.7.0"
-  }
+    "name": "ninebot-app",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dhabita/ninebot-app.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/dhabita/ninebot-app/issues"
+    },
+    "homepage": "https://github.com/dhabita/ninebot-app#readme",
+    "dependencies": {
+        "axios": "^0.27.2",
+        "connect-timeout": "^1.9.0",
+        "convert-excel-to-json": "^1.7.0",
+        "cookie-parser": "^1.4.6",
+        "core-js": "^2.6.9",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.1",
+        "ejs-locals": "^1.0.2",
+        "express": "^4.17.1",
+        "express-ejs-layouts": "^2.5.1",
+        "express-rate-limit": "^5.5.1",
+        "express-routes-mapper": "^1.1.0",
+        "node-fetch": "^2.6.1",
+        "pg-promise": "^10.11.1"
+    }
 }

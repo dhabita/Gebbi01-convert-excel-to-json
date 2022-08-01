@@ -11,8 +11,8 @@ let E = async function(f) {
     let headerLength = keyHeader.length;
     let sheetLength = result.Sheet1.length;
 
-    console.log(filled);
-    console.log(sheetLength);
+    // console.log(filled);
+    // console.log(sheetLength);
 
     let filledAll = [];
     for (let i = 0; i < sheetLength; i++) {
